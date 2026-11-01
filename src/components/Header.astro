@@ -1,0 +1,49 @@
+---
+import { content, routes, type Locale, type Page } from '../data/site';
+import Arrow from './Arrow.astro';
+interface Props { locale: Locale; page: Page; }
+const { locale, page } = Astro.props;
+const t = content[locale];
+const navigation: Page[] = ['about', 'services', 'team'];
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href={routes[locale].home} aria-label={`PAR—LE — ${t.nav.home}`}>
+      <img src="/images/logo.webp" width="700" height="202" alt="par—le" />
+    </a>
+    <button class="menu-toggle" type="button" aria-controls="primary-navigation" aria-expanded="false" aria-label={t.menu} data-open-label={t.menu} data-close-label={t.close} hidden><span></span><span></span></button>
+    <nav id="primary-navigation" aria-label={locale === 'pt' ? 'Navegação principal' : 'Main navigation'}>
+      <div class="nav-links">{navigation.map((item) => <a href={routes[locale][item]} aria-current={page === item ? 'page' : undefined}>{t.nav[item]}</a>)}</div>
+      <div class="header-actions">
+        <div class="language-switch" aria-label={locale === 'pt' ? 'Idioma' : 'Language'}>
+          <a href={routes.pt[page]} lang="pt-PT" hreflang="pt-PT" aria-label="Português" aria-current={locale === 'pt' ? 'true' : undefined}>PT</a><a href={routes.en[page]} lang="en" hreflang="en" aria-label="English" aria-current={locale === 'en' ? 'true' : undefined}>EN</a>
+        </div>
+        <a class="button button-small" href={routes[locale].contact} aria-current={page === 'contact' ? 'page' : undefined}>{t.talk}<Arrow diagonal /></a>
+      </div>
+    </nav>
+  </div>
+</header>
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const nav = document.querySelector<HTMLElement>('#primary-navigation');
+  if (toggle && nav) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', (open ? toggle.dataset.closeLabel : toggle.dataset.openLabel) ?? 'Menu');
+      nav.classList.toggle('is-open', open);
+    };
+    toggle.hidden = false;
+    document.documentElement.classList.add('has-menu');
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+    nav.addEventListener('click', (event) => {
+      if ((event.target as Element).closest('a')) setOpen(false);
+    });
+    matchMedia('(min-width: 861px)').addEventListener('change', () => setOpen(false));
+  }
+</script>

@@ -1,0 +1,22 @@
+---
+import { content, type Locale } from '../data/site';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = content[locale];
+---
+<section class="page-heading container"><p class="page-label">{t.nav.services}</p><h1 class="heading-lines">{t.servicePage.heading}</h1><p class="page-lead">{t.servicePage.intro}</p></section>
+<section class="service-details container" aria-label={t.nav.services}>
+  {t.services.map((service, index) => <details id={`service-${index + 1}`} open={index === 0}>
+    <summary><h2>{service.title}</h2><span class="disclosure-icon" aria-hidden="true"></span></summary>
+    <div class="service-description"><p>{service.description}</p><div><h3>{t.servicePage.deliverables}</h3><ul>{service.deliverables.map((item) => <li>{item}</li>)}</ul></div></div>
+  </details>)}
+</section>
+<section class="process-section section"><div class="container"><h2>{t.servicePage.processHeading}</h2><ol class="three-columns process-list">{t.servicePage.process.map((step, i) => <li><span class="step-number">0{i + 1}</span><h3>{step.title}</h3><p>{step.body}</p></li>)}</ol></div></section>
+<script>
+  const openLinkedService = () => {
+    const target = document.getElementById(location.hash.slice(1));
+    if (target instanceof HTMLDetailsElement) target.open = true;
+  };
+  openLinkedService();
+  window.addEventListener('hashchange', openLinkedService);
+</script>

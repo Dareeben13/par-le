@@ -1,0 +1,26 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Home from '../components/Home.astro';
+import About from '../components/About.astro';
+import Services from '../components/Services.astro';
+import Team from '../components/Team.astro';
+import Contact from '../components/Contact.astro';
+import ContactBanner from '../components/ContactBanner.astro';
+import { locales, pages, routes, type Locale, type Page } from '../data/site';
+
+export function getStaticPaths() {
+  return locales.flatMap((locale) => pages.map((page) => ({
+    params: { path: routes[locale][page].replace(/^\/|\/$/g, '') || undefined },
+    props: { locale, page },
+  })));
+}
+
+interface Props { locale: Locale; page: Page; }
+const { locale, page } = Astro.props;
+const views = { home: Home, about: About, services: Services, team: Team, contact: Contact };
+const View = views[page];
+---
+<Layout locale={locale} page={page}>
+  <View locale={locale} />
+  {page !== 'contact' && <ContactBanner locale={locale} />}
+</Layout>

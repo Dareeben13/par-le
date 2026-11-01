@@ -1,0 +1,8 @@
+---
+import { content, type Locale } from '../data/site';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = content[locale];
+---
+<section class="page-heading container"><p class="page-label">{t.nav.team}</p><h1 class="heading-lines">{t.team.heading}</h1><p class="page-lead">{t.team.intro}</p></section>
+<section class="founders container" aria-label={t.nav.team}>{t.team.founders.map((founder) => <article class="founder"><img src={`/images/${founder.image}.webp`} alt={founder.name} width="800" height="1067" /><div class="founder-bio"><h2>{founder.name}</h2><p class="founder-role">{founder.role}</p><p>{founder.bio}</p></div></article>)}</section>

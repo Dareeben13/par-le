@@ -1,0 +1,15 @@
+---
+import { brand, content, routes, type Locale } from '../data/site';
+import SocialLinks from './SocialLinks.astro';
+import ContactIcon from './ContactIcon.astro';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = content[locale];
+---
+<footer class="site-footer"><div class="container">
+  <div class="footer-top">
+    <a class="footer-brand" href={routes[locale].home} aria-label={`PAR—LE — ${t.nav.home}`}><img src="/images/logo.webp" width="700" height="202" alt="par—le" loading="lazy" /></a>
+    <p>{t.footer.line}</p><SocialLinks />
+  </div>
+  <div class="footer-bottom"><span>© {new Date().getFullYear()} PAR—LE</span><span>{t.footer.credit}</span><a class="icon-label" href={`mailto:${brand.email}`}><ContactIcon name="email" /><span>{brand.email}</span></a></div>
+</div></footer>

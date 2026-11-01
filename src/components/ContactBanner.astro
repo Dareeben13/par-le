@@ -1,0 +1,11 @@
+---
+import { content, routes, type Locale } from '../data/site';
+import Arrow from './Arrow.astro';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = content[locale];
+---
+<section class="contact-banner"><div class="container contact-banner-inner">
+  <div><h2 class="heading-lines">{t.cta.heading}</h2><p>{t.cta.body}</p></div>
+  <a class="round-link" href={routes[locale].contact} aria-label={t.talk}><Arrow diagonal /></a>
+</div></section>

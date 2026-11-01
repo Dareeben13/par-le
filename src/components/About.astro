@@ -1,0 +1,9 @@
+---
+import { content, type Locale } from '../data/site';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = content[locale];
+---
+<section class="page-heading container"><p class="page-label">{t.nav.about}</p><h1 class="heading-lines">{t.about.heading}</h1><p class="page-lead">{t.about.lead}</p></section>
+<section class="about-story container"><figure><img src="/images/artwork.webp" alt={t.about.imageAlt} width="1400" height="933" fetchpriority="high" /></figure><div class="story-copy">{t.about.paragraphs.map((paragraph) => <p>{paragraph}</p>)}</div></section>
+<section class="values-section section"><div class="container"><h2>{t.about.belief}</h2><div class="three-columns">{t.about.values.map((value) => <article><h3>{value.title}</h3><p>{value.body}</p></article>)}</div></div></section>

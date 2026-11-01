@@ -1,0 +1,15 @@
+---
+import { brand, content, type Locale } from '../data/site';
+import Arrow from './Arrow.astro';
+import ContactIcon from './ContactIcon.astro';
+import SocialLinks from './SocialLinks.astro';
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = content[locale];
+const subject = encodeURIComponent(locale === 'pt' ? 'Vamos conversar sobre um projeto' : 'Let’s talk about a project');
+---
+<section class="contact-page container">
+  <div class="contact-heading"><p class="page-label">{t.nav.contact}</p><h1 class="heading-lines">{t.contact.heading}</h1><p class="page-lead">{t.contact.intro}</p></div>
+  <div class="contact-panel"><span class="speech-mark" aria-hidden="true"></span><p>{t.contact.emailLabel}</p><a class="email-address" href={`mailto:${brand.email}?subject=${subject}`}>{brand.email}</a><a class="button" href={`mailto:${brand.email}?subject=${subject}`}><span class="icon-label"><ContactIcon name="email" /><span>{t.contact.emailAction}</span></span><Arrow diagonal /></a><div class="contact-social"><p>{t.contact.social}</p><SocialLinks /></div></div>
+</section>
+<section class="contact-brief section"><div class="container"><h2>{t.contact.briefHeading}</h2><ul>{t.contact.brief.map((item) => <li>{item}</li>)}</ul></div></section>
