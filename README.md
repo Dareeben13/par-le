@@ -4,7 +4,7 @@ Static, bilingual website for PAR—LE, a cultural and artistic communications a
 
 ## Local development
 
-Use Node.js 22.23.4 or newer. The version is pinned in `.node-version`.
+Use Node.js 26.13.0 LTS. The version is pinned in `.node-version`.
 
 ```sh
 pnpm install --frozen-lockfile
@@ -39,7 +39,7 @@ Deploy this directory as a Cloudflare Pages project. It can be its own Git repos
 | Framework | Astro |
 | Build command | `pnpm run build` |
 | Output directory | `dist` |
-| `NODE_VERSION` | `22.23.4` |
+| `NODE_VERSION` | `26.13.0` |
 | `SITE_URL` | The actual production URL, such as `https://your-project.pages.dev` |
 
 Set `SITE_URL` in Pages before the production build. It controls canonical links, language alternatives, social image URLs and the sitemap. Do not publish with the example hostname. For a local metadata check, provide the variable to the build command: `SITE_URL=https://your-real-hostname pnpm run build`. `.env.example` documents the deployment variable; the Astro configuration reads it from the process environment.
@@ -76,7 +76,7 @@ References: [Cloudflare CI deployment](https://developers.cloudflare.com/pages/h
 - Founder roles and biographies come from the supplied presentation. Other copy is adapted from it and should receive the founders' editorial review.
 - Mint `#D7E5D8`, off-white `#F3F1EC` and dark `#111111` follow the brand guide. Purple `#A354FF` follows the visible swatch because its printed hex label is inconsistent.
 - League Spartan is the supplied display typeface. DM Sans is the body substitute for Open Sauce, whose licensed font files were not supplied. Both included font packages contain their licenses.
-- Contact links open the visitor's email application. The email address is visible for copying. There is no form submission service, tracking, cookie storage or fabricated submission confirmation.
+- Contact links open the visitor's email application. The email address is visible for copying. There is no form submission service, application cookie storage or fabricated submission confirmation. Cloudflare Web Analytics is enabled through the hosting dashboard; the security policy permits its script from `static.cloudflareinsights.com` and reports to `cloudflareinsights.com` or the same-origin `/cdn-cgi/rum` endpoint.
 - No portfolio projects, client logos or testimonials have been invented. Add selected work when approved projects and images are available.
 
 Before the public launch, have the founders approve the copy, images, contact details and any company disclosures applicable to their business. Keep the source, hosting and future domain accounts under company ownership.
