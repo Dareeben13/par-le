@@ -10,6 +10,8 @@ const { locale, page, title, noindex = false } = Astro.props;
 const t = content[locale];
 const pageTitle = `${title ?? t.titles[page]} | PAR—LE`;
 const canonical = Astro.site ? new URL(routes[locale][page], Astro.site) : undefined;
+const socialImage = Astro.site ? new URL('/social-card.png', Astro.site) : undefined;
+const socialImageAlt = locale === 'pt' ? 'PAR—LE — Entre a arte e o público.' : 'PAR—LE — Connecting art and its audience.';
 ---
 <!doctype html>
 <html lang={locale === 'pt' ? 'pt-PT' : 'en'}>
@@ -19,7 +21,9 @@ const canonical = Astro.site ? new URL(routes[locale][page], Astro.site) : undef
     <meta name="theme-color" content="#F3F1EC" />
     <meta name="description" content={t.descriptions[page]} />
     <title>{pageTitle}</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
     {noindex && <meta name="robots" content="noindex" />}
     {canonical && !noindex && <link rel="canonical" href={canonical} />}
     {Astro.site && !noindex && <>
@@ -33,7 +37,18 @@ const canonical = Astro.site ? new URL(routes[locale][page], Astro.site) : undef
     <meta property="og:description" content={t.descriptions[page]} />
     <meta property="og:locale" content={locale === 'pt' ? 'pt_PT' : 'en_GB'} />
     {canonical && !noindex && <meta property="og:url" content={canonical} />}
-    {Astro.site && <meta property="og:image" content={new URL('/social-card.png', Astro.site)} />}
+    {socialImage && <>
+      <meta property="og:image" content={socialImage} />
+      <meta property="og:image:type" content="image/png" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content={socialImageAlt} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={pageTitle} />
+      <meta name="twitter:description" content={t.descriptions[page]} />
+      <meta name="twitter:image" content={socialImage} />
+      <meta name="twitter:image:alt" content={socialImageAlt} />
+    </>}
   </head>
   <body class:list={[`page-${page}`, `locale-${locale}`]}>
     <a class="skip-link" href="#main">{t.skip}</a>
