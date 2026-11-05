@@ -7,7 +7,7 @@ Static, bilingual website for PAR—LE, a cultural and artistic communications a
 Use Node.js 22.23.4 or newer. The version is pinned in `.node-version`.
 
 ```sh
-pnpm ci
+pnpm install --frozen-lockfile
 pnpm run dev
 ```
 
@@ -37,16 +37,38 @@ Deploy this directory as a Cloudflare Pages project. It can be its own Git repos
 | Setting | Value |
 | --- | --- |
 | Framework | Astro |
-| Build command | `npm run build` |
+| Build command | `pnpm run build` |
 | Output directory | `dist` |
 | `NODE_VERSION` | `22.23.4` |
 | `SITE_URL` | The actual production URL, such as `https://your-project.pages.dev` |
 
-Set `SITE_URL` in Pages before the production build. It controls canonical links, language alternatives, social image URLs and the sitemap. Do not publish with the example hostname. For a local metadata check, provide the variable to the build command: `SITE_URL=https://your-real-hostname npm run build`. `.env.example` documents the deployment variable; the Astro configuration reads it from the process environment.
+Set `SITE_URL` in Pages before the production build. It controls canonical links, language alternatives, social image URLs and the sitemap. Do not publish with the example hostname. For a local metadata check, provide the variable to the build command: `SITE_URL=https://your-real-hostname pnpm run build`. `.env.example` documents the deployment variable; the Astro configuration reads it from the process environment.
 
 Alternatively, build locally and upload the contents of `dist` using Pages Direct Upload. `public/_headers` is copied into the build for Cloudflare to apply. No Worker or paid hosting feature is needed.
 
 When adding a custom domain later, connect it in Pages, change `SITE_URL`, rebuild, and redirect the old hostname. If moving an existing domain's DNS, preserve its email records.
+
+## GitHub Actions deployment
+
+`.github/workflows/cloudflare-pages.yml` validates and builds pull requests to `main`. Pushes to `main` deploy the checked build to the Cloudflare Pages project `par-le`. The workflow can also be started from the Actions tab on `main`. Other branches never deploy to production.
+
+### One-time configuration
+
+1. In Cloudflare, make sure the Pages project `par-le` exists in the intended account and uses `main` as its production branch. For a new project, choose Direct Upload. If the existing project has native Git builds enabled, disable automatic builds to avoid duplicate deployments from the same push; keep the project and its domains.
+2. Create a Cloudflare API token with **Account → Cloudflare Pages → Edit**, limited to the account containing `par-le`.
+3. Open [repository Actions secrets](https://github.com/Dareeben13/par-le/settings/secrets/actions) and add:
+   - `CLOUDFLARE_API_TOKEN`: the API token.
+   - `CLOUDFLARE_ACCOUNT_ID`: the account ID from Cloudflare.
+4. The workflow builds with `https://par-le.pages.dev` as the canonical site URL. If the project uses another production hostname, add a repository **variable** named `SITE_URL` under [Actions variables](https://github.com/Dareeben13/par-le/settings/variables/actions).
+5. Push the workflow to `main`, or select **Actions → Cloudflare Pages → Run workflow** after adding the secrets. Check the run's deployment output and open the returned URL.
+
+Cloudflare dashboard build variables are not inherited by GitHub Actions. `SITE_URL` must be set in GitHub when overriding the default. Credentials stay in GitHub secrets and are passed only to the production deployment steps. Pull requests build without Cloudflare credentials.
+
+The workflow uses pnpm 10.33.0, reads Node from `.node-version`, installs with the frozen lockfile, and pins GitHub Actions to verified commit SHAs and Wrangler to 4.158.0. Refresh those pins deliberately when updating deployment tooling. Production runs are serialized so a newer deployment does not get overtaken by an older run.
+
+To roll back, choose a previous successful production deployment in the Cloudflare Pages dashboard and roll back to it. Reverting the corresponding Git commit keeps the next push consistent with the rollback.
+
+References: [Cloudflare CI deployment](https://developers.cloudflare.com/pages/how-to/use-direct-upload-with-continuous-integration/), [Wrangler Action](https://github.com/cloudflare/wrangler-action).
 
 ## Content and design
 
@@ -61,4 +83,4 @@ Before the public launch, have the founders approve the copy, images, contact de
 
 ## Dependencies
 
-Commit `pnpm-lock.yaml` and use `npm ci` for reproducible installation. Astro 6.4.8 is pinned; review dependency updates before applying them. No framework for client-side rendering, component kit, animation library or CSS utility framework is included.
+Commit `pnpm-lock.yaml` and use `pnpm install --frozen-lockfile` for reproducible installation. Astro 6.4.8 is pinned; review dependency updates before applying them. No framework for client-side rendering, component kit, animation library or CSS utility framework is included.

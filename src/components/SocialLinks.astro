@@ -3,5 +3,5 @@ import { socialLinks } from '../data/site';
 import ContactIcon from './ContactIcon.astro';
 ---
 <div class="social-links">
-  {socialLinks.map((link) => <a class="icon-label social-link" href={link.href} target="_blank" rel="noopener noreferrer"><ContactIcon name={link.icon} /><span>{link.name}</span></a>)}
+  {socialLinks.map((link) => <a class="social-link" aria-label={link.name} title={link.name} href={link.href} target="_blank" rel="noopener noreferrer"><ContactIcon name={link.icon} /></a>)}
 </div>
