@@ -7,16 +7,16 @@ Static, bilingual website for PAR—LE, a cultural and artistic communications a
 Use Node.js 22.23.4 or newer. The version is pinned in `.node-version`.
 
 ```sh
-npm ci
-npm run dev
+pnpm ci
+pnpm run dev
 ```
 
 Open the local address printed by Astro. No database, secrets or external APIs are required.
 
 ```sh
-npm run check
-npm run build
-npm run preview
+pnpm run check
+pnpm run build
+pnpm run preview
 ```
 
 ## Structure
@@ -61,4 +61,4 @@ Before the public launch, have the founders approve the copy, images, contact de
 
 ## Dependencies
 
-Commit `package-lock.json` and use `npm ci` for reproducible installation. Astro 6.4.8 is pinned; review dependency updates before applying them. No framework for client-side rendering, component kit, animation library or CSS utility framework is included.
+Commit `pnpm-lock.yaml` and use `npm ci` for reproducible installation. Astro 6.4.8 is pinned; review dependency updates before applying them. No framework for client-side rendering, component kit, animation library or CSS utility framework is included.
